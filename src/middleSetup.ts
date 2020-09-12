@@ -1,7 +1,12 @@
 import * as bodyParser from 'body-parser';
 import {Express} from 'express';
+import {getConfigVariable} from './lib/configTool';
+import {readConfig} from './lib/configUtil';
+import {logger} from './logger';
+import {route as startRoute} from './routes/start';
+import {route as stopRoute} from './routes/stop';
 
-export const setupExpress = (app: Express): void => {
+export const setupExpress = async (app: Express): Promise<void> => {
 	// express settings
 	app.set('etag', false);
 	app.disable('x-powered-by');
@@ -9,9 +14,11 @@ export const setupExpress = (app: Express): void => {
 	// body parsers
 	app.use(bodyParser.urlencoded({extended: false}));
 	app.use(bodyParser.json());
-	// middlewares
-	/* 	app.use(corsMiddleWare);
-	app.use('/api', rootRouter);
- */ // errors
-	/* 	app.use(errorMiddleWare); */
+	// setup hooks
+	const baseUrl = await getConfigVariable('base_url', '/api/hooks');
+	const config = await readConfig();
+	logger.info(`registered start hook: ${baseUrl}/${config.startHookUrl}`);
+	app.use(`${baseUrl}/${config.startHookUrl}`, startRoute);
+	logger.info(`registered stop hook: ${baseUrl}/${config.stopHookUrl}`);
+	app.use(`${baseUrl}/${config.stopHookUrl}`, stopRoute);
 };

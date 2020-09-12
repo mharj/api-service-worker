@@ -5,7 +5,7 @@ export const logger = getLogger('console');
 const getLoggerLevel = (): string => {
 	switch (process.env.NODE_ENV) {
 		case 'test':
-			return 'debug';
+			return 'fatal';
 		case 'development':
 			return 'debug';
 		default:
