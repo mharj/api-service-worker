@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser';
 import {Express} from 'express';
-import {getConfigVariable} from './lib/configTool';
+import {getBaseUrl} from './env';
 import {readConfig} from './lib/configUtil';
 import {logger} from './logger';
 import {route as startRoute} from './routes/start';
@@ -15,7 +15,7 @@ export const setupExpress = async (app: Express): Promise<void> => {
 	app.use(bodyParser.urlencoded({extended: false}));
 	app.use(bodyParser.json());
 	// setup hooks
-	const baseUrl = await getConfigVariable('base_url', '/api/hooks');
+	const baseUrl = await getBaseUrl();
 	const config = await readConfig();
 	logger.info(`registered start hook: ${baseUrl}/${config.startHookUrl}`);
 	app.use(`${baseUrl}/${config.startHookUrl}`, startRoute);

@@ -1,6 +1,6 @@
 import * as express from 'express';
 import {Server} from 'http';
-import {getConfigVariable} from './lib/configTool';
+import {getHttpPort} from './env';
 import {logger} from './logger';
 const app = express();
 
@@ -32,7 +32,7 @@ export const stopExpress = (): Promise<void> => {
 };
 
 export const startAll = async (): Promise<void> => {
-	const port = await getConfigVariable('PORT', '5259', {fileLowerCase: true});
+	const port = await getHttpPort();
 	await startExpress(port);
 	logger.info(`api-service-worker listening on port http://localhost:${port} [${process.env.NODE_ENV}]`);
 };

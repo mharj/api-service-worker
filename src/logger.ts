@@ -2,7 +2,7 @@ import {getLogger} from 'log4js';
 
 export const logger = getLogger('console');
 
-const getLoggerLevel = (): string => {
+function getLoggerLevel(): string {
 	switch (process.env.NODE_ENV) {
 		case 'test':
 			return 'fatal';
@@ -11,7 +11,7 @@ const getLoggerLevel = (): string => {
 		default:
 			return 'info';
 	}
-};
+}
 
 logger.level = getLoggerLevel();
 logger.debug('logger loaded');

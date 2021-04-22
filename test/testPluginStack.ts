@@ -1,7 +1,6 @@
-process.env.NODE_ENV = 'test';
 import {expect} from 'chai';
-import * as sinon from 'sinon';
 import 'mocha';
+import * as sinon from 'sinon';
 import {PluginStack} from '../src/lib/pluginStack';
 import {TestPlugin} from './lib/TestPlugin';
 

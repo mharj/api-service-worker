@@ -1,12 +1,14 @@
-process.env.NODE_ENV = 'test';
-import 'chai-http';
+// tslint:disable: no-require-imports
+// tslint:disable: no-var-requires
 import * as chai from 'chai';
-import {expect} from 'chai';
-import 'mocha';
+import 'chai-http';
 import {Express} from 'express';
-import {getConfigVariable} from '../src/lib/configTool';
+import 'mocha';
+import {getBaseUrl} from '../src/env';
 import {IConfigFile, readConfig} from '../src/lib/configUtil';
 import {startExpress, stopExpress} from '../src/service';
+
+const expect = chai.expect;
 
 chai.use(require('chai-http'));
 let app: Express;
@@ -15,7 +17,7 @@ let config: IConfigFile;
 describe('test hooks', () => {
 	before(async () => {
 		app = await startExpress('9475');
-		baseUrl = await getConfigVariable('base_url', '/api/hooks');
+		baseUrl = await getBaseUrl();
 		config = await readConfig();
 	});
 	it('should test start hook', async () => {
